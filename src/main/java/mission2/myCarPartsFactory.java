@@ -37,7 +37,7 @@ public class myCarPartsFactory implements CarPartsFactory{
     }
 
     @Override
-    public BrakeSystem createBreake(int part) {
+    public BrakeSystem createBrake(int part) {
         switch(part){
             case 1:
                 return new Mando();
@@ -52,7 +52,7 @@ public class myCarPartsFactory implements CarPartsFactory{
 
 
     @Override
-    public SteeringSystem createSterring(int part) {
+    public SteeringSystem createSteering(int part) {
         switch(part){
             case 1:
                 return new Bosch_S();

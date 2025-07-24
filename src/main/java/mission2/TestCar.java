@@ -14,7 +14,7 @@ public class TestCar {
         myTestCar = my;
     }
 
-    private static boolean isValidCheck() {
+    public static boolean isValidCheck() {
         if(myTestCar.carType instanceof Sedan && myTestCar.breakSystem instanceof Continental) return false;
         if(myTestCar.carType instanceof SUV && myTestCar.engine instanceof TOYOTA) return false;
         if(myTestCar.carType instanceof Truck && myTestCar.engine instanceof WIA) return false;

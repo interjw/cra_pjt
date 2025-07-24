@@ -8,6 +8,6 @@ import mission2.SteeringSystem.SteeringSystem;
 public interface CarPartsFactory {
     CarType createCarType(int part);
     Engine createEngine(int part);
-    BrakeSystem createBreake(int part);
-    SteeringSystem createSterring(int part);
+    BrakeSystem createBrake(int part);
+    SteeringSystem createSteering(int part);
 }

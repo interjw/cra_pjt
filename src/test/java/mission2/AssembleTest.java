@@ -47,6 +47,13 @@ class AssembleTest {
         assertEquals(expectedName, car.breakSystem.getName());
     }
 
+    @Test
+    public void Mobis_Steering_네이밍테스트() {
+        car.set(new Mobis());
+        String expectedName = "Mobis";
+        assertEquals(expectedName, car.steeringSystem.getName());
+    }
+
 
     @Test
     public void engine_네이밍테스트1() {
@@ -82,5 +89,17 @@ class AssembleTest {
         car.set(new Mando());
         String expectedName = "Mando";
         assertEquals(expectedName, car.breakSystem.getName());
+    }
+    @Test
+    public void brake_네이밍테스트3() {
+        car.set(new Continental());
+        String expectedName = "Continental";
+        assertEquals(expectedName, car.breakSystem.getName());
+    }
+
+    @Test
+    public void main테스트(){
+        Assemble am = new Assemble();
+
     }
 }

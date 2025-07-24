@@ -1,11 +1,5 @@
 package mission2;
 
-import mission2.BrakeSystem.*;
-import mission2.CarType.*;
-import mission2.Engine.*;
-import mission2.SteeringSystem.Bosch_S;
-import mission2.SteeringSystem.SteeringSystem;
-
 import java.util.Scanner;
 import static mission2.Menu.*;
 
@@ -38,7 +32,7 @@ public class Assemble {
             String buf =  getString(sc);
             if (isExit(buf)) break;
 
-            Integer answer = getInteger(buf, currentStep);
+            Integer answer = getValidAnswer(buf, currentStep);
             if (answer == null) continue;
 
             currentStep = doAction(answer, currentStep);
@@ -51,7 +45,7 @@ public class Assemble {
         return buf == null;
     }
 
-    private static Integer getInteger(String buf, int currentStep) {
+    private static Integer getValidAnswer(String buf, int currentStep) {
         int answer = getAnswer(buf);
         if (isUnvalidCheck(currentStep, answer)) return null;
         return answer;
@@ -96,12 +90,12 @@ public class Assemble {
                 currentStep = BRAKE_SYSTEM;
                 break;
             case BRAKE_SYSTEM:
-                myCar.set(factory.createBreake(answer));
+                myCar.set(factory.createBrake(answer));
                 delay(DELAY_MS);
                 currentStep = STEERING_SYSTEM;
                 break;
             case STEERING_SYSTEM:
-                myCar.set(factory.createSterring(answer));
+                myCar.set(factory.createSteering(answer));
                 delay(DELAY_MS);
                 currentStep = Run_Test;
                 break;
