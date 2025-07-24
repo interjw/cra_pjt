@@ -44,7 +44,7 @@ public class TestCar {
         System.out.println("자동차가 동작됩니다.");
     }
 
-    static void testProducedCar() {
+    public static void testProducedCar() {
         System.out.println("Test...");
         delay(PRE_TEST_DELAY_MS);
         if(myTestCar.carType instanceof Sedan && myTestCar.breakSystem instanceof Continental) {
@@ -62,7 +62,7 @@ public class TestCar {
         }
     }
 
-    private static void fail(String msg) {
+    public static void fail(String msg) {
         System.out.println("자동차 부품 조합 테스트 결과 : FAIL");
         System.out.println(msg);
     }

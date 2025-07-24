@@ -106,7 +106,7 @@ public class Assemble {
         return currentStep;
     }
 
-    private static void testCar(int answer) {
+    public static void testCar(int answer) {
         TestCar tcCar = new TestCar(myCar);
         if (answer == 1) {
             tcCar.runProducedCar();
@@ -175,13 +175,13 @@ public class Assemble {
         }
     }
 
-    private static void initScreen() {
+    public static void initScreen() {
         System.out.print(CLEAR_SCREEN);
         System.out.flush();
     }
 
 
-    private static boolean isValidRange(int step, int ans) {
+    public static boolean isValidRange(int step, int ans) {
         switch (step) {
             case CAR_TYPE:
                 if (ans < 1 || ans > 3) {

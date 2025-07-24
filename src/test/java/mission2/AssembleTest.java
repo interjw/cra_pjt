@@ -99,7 +99,38 @@ class AssembleTest {
 
     @Test
     public void main테스트(){
-        Assemble am = new Assemble();
+        assertDoesNotThrow(() -> Assemble.initScreen());
 
     }
+
+    @Test
+    public void main테스트1(){
+        boolean result = Assemble.isValidRange(1,1);
+        assertTrue(result);
+    }
+
+    @Test
+    public void main테스트2(){
+        boolean result = Assemble.isValidRange(1,2);
+        assertTrue(result);
+    }
+
+    @Test
+    public void main테스트3(){
+        boolean result = Assemble.isValidRange(3,2);
+        assertTrue(result);
+    }
+
+    @Test
+    public void main테스트4(){
+        boolean result = Assemble.isValidRange(3,3);
+        assertFalse(result);
+    }
+
+    @Test
+    public void main테스트5(){
+        boolean result = Assemble.isValidRange(3,-1);
+        assertFalse(result);
+    }
+
 }

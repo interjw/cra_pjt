@@ -71,4 +71,59 @@ class TestCarTest {
         boolean result = TestCar.isValidCheck();
         assertTrue(result);
     }
+
+    @Test
+    void 테스트1(){
+        TestCar.myTestCar = new MyCar();
+        TestCar.myTestCar.set(new Bosch_B());
+        TestCar.myTestCar.set(new Bosch_S());
+        assertDoesNotThrow(() -> TestCar.testProducedCar());
+    }
+
+    @Test
+    void 테스트2(){
+        TestCar.myTestCar = new MyCar();
+        TestCar.myTestCar.set(new Sedan());
+        TestCar.myTestCar.set(new TOYOTA());
+        TestCar.myTestCar.set(new Bosch_B());
+        TestCar.myTestCar.set(new Bosch_S());
+        assertDoesNotThrow(() -> TestCar.runProducedCar());
+    }
+
+    @Test
+    void 테스트3(){
+        TestCar.myTestCar = new MyCar();
+        TestCar.myTestCar.set(new Sedan());
+        TestCar.myTestCar.set(new Broken());
+        TestCar.myTestCar.set(new Bosch_B());
+        TestCar.myTestCar.set(new Bosch_S());
+        assertDoesNotThrow(() -> TestCar.runProducedCar());
+    }
+
+    @Test
+    void 테스트4(){
+        TestCar.myTestCar = new MyCar();
+        TestCar.myTestCar.set(new Sedan());
+        TestCar.myTestCar.set(new Broken());
+        TestCar.myTestCar.set(new Bosch_B());
+        TestCar.myTestCar.set(new Mobis());
+        assertDoesNotThrow(() -> TestCar.runProducedCar());
+    }
+
+    @Test
+    void 테스트5(){
+        MyCar ca = new MyCar();
+        ca.set(new Sedan());
+        ca.set(new Broken());
+        ca.set(new Bosch_B());
+        ca.set(new Bosch_S());
+        TestCar tc = new TestCar(ca);
+
+        assertDoesNotThrow(() -> TestCar.runProducedCar());
+    }
+
+    @Test
+    void 메뉴테스트4() {
+        assertDoesNotThrow(() -> TestCar.fail("안녕"));
+    }
 }
