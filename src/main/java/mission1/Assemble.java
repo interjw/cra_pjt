@@ -1,6 +1,7 @@
 import java.util.Scanner;
 
 public class Assemble {
+
     private static final String CLEAR_SCREEN = "\033[H\033[2J";
 
     private static final int FirstStep = 0;
@@ -11,16 +12,21 @@ public class Assemble {
     private static final int Run_Test       = 4;
 
     private static final int SEDAN = 1, SUV = 2, TRUCK = 3;
-    private static final int GM = 1, TOYOTA = 2, WIA = 3;
+    private static final String[] TYPE_NAME = {"","Sedan","SUV","Truck"};
+    private static final int GM = 1, TOYOTA = 2, WIA = 3 ,BrokenEngine = 4;
+    private static final String[] ENGINE_NAME = {"","GM","TOYOTA","WIA","고장난 엔진"};
     private static final int MANDO = 1, CONTINENTAL = 2, BOSCH_B = 3;
+    private static final String[] BRAKE_NAME = {"","MANDO","CONTINENTAL","BOSCH"};
     private static final int BOSCH_S = 1, MOBIS = 2;
+    private static final String[] STREERING_NAME = {"","BOSCH","MOBIS"};
 
-    public static final int normalDelayMS = 800;
-    public static final int testDelayMS = 2000;
-    public static final int notNumber = -1;
-    public static final int backward = 0;
+    public static final int DELAY_MS = 800;
+    public static final int PRE_TEST_DELAY_MS = 1500;
+    public static final int TEST_DELAY_MS = 2000;
+    public static final int NOT_NUMBER = -1;
+    public static final int BACKWARD = 0;
 
-    private static int[] stack = new int[5];
+    private static int[] myCar = new int[5];
 
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
@@ -29,8 +35,8 @@ public class Assemble {
         while (true) {
             initScreen();
             showMenu(currentStep);
-            String buf = getBuf(sc);
-            if (buf == null) break;
+            String buf =  getString(sc);
+            if (isExit(buf)) break;
 
             Integer answer = getInteger(buf, currentStep);
             if (answer == null) continue;
@@ -39,6 +45,10 @@ public class Assemble {
         }
 
         sc.close();
+    }
+
+    private static boolean isExit(String buf) {
+        return buf == null;
     }
 
     private static Integer getInteger(String buf, int currentStep) {
@@ -52,7 +62,7 @@ public class Assemble {
     }
 
     private static int goBackOrAssembleOrTest(int answer, int currentStep) {
-        if (answer == backward) {
+        if (answer == BACKWARD) {
             currentStep = moveStep(currentStep);
             return currentStep;
         }
@@ -61,20 +71,14 @@ public class Assemble {
         return currentStep;
     }
 
-    private static String getBuf(Scanner sc) {
-        String buf = getString(sc);
-        if (buf == null) return null;
-        return buf;
-    }
-
     private static int getAnswer(String buf) {
         int answer;
         try {
             answer = Integer.parseInt(buf);
         } catch (NumberFormatException e) {
             System.out.println("ERROR :: 숫자만 입력 가능");
-            delay(normalDelayMS);
-            return notNumber;
+            delay(DELAY_MS);
+            return NOT_NUMBER;
         }
         return answer;
     }
@@ -83,34 +87,33 @@ public class Assemble {
         switch (currentStep) {
             case CarType:
                 selectCarType(answer);
-                delay(normalDelayMS);
+                delay(DELAY_MS);
                 currentStep = Engine;
                 break;
             case Engine:
                 selectEngine(answer);
-                delay(normalDelayMS);
+                delay(DELAY_MS);
                 currentStep = BrakeSystem;
                 break;
             case BrakeSystem:
                 selectBrakeSystem(answer);
-                delay(normalDelayMS);
+                delay(DELAY_MS);
                 currentStep = SteeringSystem;
                 break;
             case SteeringSystem:
                 selectSteeringSystem(answer);
-                delay(normalDelayMS);
+                delay(DELAY_MS);
                 currentStep = Run_Test;
                 break;
             case Run_Test:
                 if (answer == 1) {
                     runProducedCar();
-                    delay(testDelayMS);
                 } else if (answer == 2) {
                     System.out.println("Test...");
-                    delay(1500);
+                    delay(PRE_TEST_DELAY_MS);
                     testProducedCar();
-                    delay(testDelayMS);
                 }
+                delay(TEST_DELAY_MS);
                 break;
         }
         return currentStep;
@@ -128,22 +131,26 @@ public class Assemble {
     }
 
     private static boolean isUnvalidCheck(int currentStep, int answer) {
-        if( answer == notNumber)  return true;
+        if( answer == NOT_NUMBER)  return true;
 
         if (isValidRange(currentStep, answer)) {
               return false;
         }
-        delay(normalDelayMS);
+        delay(DELAY_MS);
         return true;
     }
 
     private static int moveStep(int currentStep) {
         if (currentStep == Run_Test) {
             currentStep = goFirstStep();
-        } else if (currentStep > CarType) {
+        } else if (currentStep > FirstStep) {
             currentStep = goBackStep(currentStep);
         }
         return currentStep;
+    }
+
+    private static int goFirstStep() {
+        return FirstStep;
     }
 
     private static int goBackStep(int currentStep) {
@@ -151,24 +158,23 @@ public class Assemble {
         return currentStep;
     }
 
-    private static int goFirstStep() {
-        int currentStep;
-        currentStep = FirstStep;
-        return currentStep;
-    }
-
     private static void showMenu(int step) {
         switch (step) {
             case CarType:
-                showCarTypeMenu(); break;
+                showCarTypeMenu();
+                break;
             case Engine:
-                showEngineMenu(); break;
+                showEngineMenu();
+                break;
             case BrakeSystem:
-                showBrakeMenu(); break;
+                showBrakeMenu();
+                break;
             case SteeringSystem:
-                showSteeringMenu(); break;
+                showSteeringMenu();
+                break;
             case Run_Test:
-                showRunTestMenu(); break;
+                showRunTestMenu();
+                break;
         }
     }
 
@@ -259,33 +265,31 @@ public class Assemble {
         return true;
     }
 
-    private static void selectCarType(int a) {
-        stack[CarType] = a;
-        System.out.printf("차량 타입으로 %s을 선택하셨습니다.\n", a == 1 ? "Sedan" : a == 2 ? "SUV" : "Truck");
+    private static void selectCarType(int answer) {
+        myCar[CarType] = answer;
+        System.out.printf("차량 타입으로 %s을 선택하셨습니다.\n", TYPE_NAME[answer]);
     }
-    private static void selectEngine(int a) {
-        stack[Engine] = a;
-        String name = a == 1 ? "GM" : a == 2 ? "TOYOTA" : a == 3 ? "WIA" : "고장난 엔진";
-        System.out.printf("%s 엔진을 선택하셨습니다.\n", name);
+
+    private static void selectEngine(int answer) {
+        myCar[Engine] = answer;
+        System.out.printf("%s 엔진을 선택하셨습니다.\n", ENGINE_NAME[answer]);
     }
-    private static void selectBrakeSystem(int a) {
-        stack[BrakeSystem] = a;
-        String name = a == 1 ? "MANDO" : a == 2 ? "CONTINENTAL" : "BOSCH";
-        System.out.printf("%s 제동장치를 선택하셨습니다.\n", name);
+    private static void selectBrakeSystem(int answer) {
+        myCar[BrakeSystem] = answer;
+        System.out.printf("%s 제동장치를 선택하셨습니다.\n", BRAKE_NAME[answer]);
     }
-    private static void selectSteeringSystem(int a) {
-        stack[SteeringSystem] = a;
-        String name = a == 1 ? "BOSCH" : "MOBIS";
-        System.out.printf("%s 조향장치를 선택하셨습니다.\n", name);
+    private static void selectSteeringSystem(int answer) {
+        myCar[SteeringSystem] = answer;
+        System.out.printf("%s 조향장치를 선택하셨습니다.\n", STREERING_NAME[answer]);
     }
 
 
     private static boolean isValidCheck() {
-        if (stack[CarType] == SEDAN && stack[BrakeSystem] == CONTINENTAL) return false;
-        if (stack[CarType] == SUV   && stack[Engine] == TOYOTA)       return false;
-        if (stack[CarType] == TRUCK && stack[Engine] == WIA)          return false;
-        if (stack[CarType] == TRUCK && stack[BrakeSystem] == MANDO)  return false;
-        if (stack[BrakeSystem] == BOSCH_B && stack[SteeringSystem] != BOSCH_S) return false;
+        if (myCar[CarType] == SEDAN && myCar[BrakeSystem] == CONTINENTAL) return false;
+        if (myCar[CarType] == SUV   && myCar[Engine] == TOYOTA)       return false;
+        if (myCar[CarType] == TRUCK && myCar[Engine] == WIA)          return false;
+        if (myCar[CarType] == TRUCK && myCar[BrakeSystem] == MANDO)  return false;
+        if (myCar[BrakeSystem] == BOSCH_B && myCar[SteeringSystem] != BOSCH_S) return false;
         return true;
     }
 
@@ -294,7 +298,7 @@ public class Assemble {
             System.out.println("자동차가 동작되지 않습니다");
             return;
         }
-        if (stack[Engine] == 4) {
+        if (myCar[Engine] == BrokenEngine) {
             System.out.println("엔진이 고장나있습니다.");
             System.out.println("자동차가 움직이지 않습니다.");
             return;
@@ -303,28 +307,23 @@ public class Assemble {
     }
 
     private static void printRunResult() {
-        String[] carNames = {"", "Sedan", "SUV", "Truck"};
-        String[] engNames = {"", "GM", "TOYOTA", "WIA"};
-        System.out.printf("Car Type : %s\n", carNames[stack[CarType]]);
-        System.out.printf("Engine   : %s\n", engNames[stack[Engine]]);
-        System.out.printf("Brake    : %s\n",
-                stack[BrakeSystem]==1? "Mando":
-                        stack[BrakeSystem]==2? "Continental":"Bosch");
-        System.out.printf("Steering : %s\n",
-                stack[SteeringSystem]==1? "Bosch":"Mobis");
+        System.out.printf("Car Type : %s\n", TYPE_NAME[myCar[CarType]]);
+        System.out.printf("Engine   : %s\n", ENGINE_NAME[myCar[Engine]]);
+        System.out.printf("Brake    : %s\n", BRAKE_NAME[myCar[BrakeSystem]]);
+        System.out.printf("Steering : %s\n", STREERING_NAME[myCar[SteeringSystem]]);
         System.out.println("자동차가 동작됩니다.");
     }
 
     private static void testProducedCar() {
-        if (stack[CarType] == SEDAN && stack[BrakeSystem] == CONTINENTAL) {
+        if (myCar[CarType] == SEDAN && myCar[BrakeSystem] == CONTINENTAL) {
             fail("Sedan에는 Continental제동장치 사용 불가");
-        } else if (stack[CarType] == SUV && stack[Engine] == TOYOTA) {
+        } else if (myCar[CarType] == SUV && myCar[Engine] == TOYOTA) {
             fail("SUV에는 TOYOTA엔진 사용 불가");
-        } else if (stack[CarType] == TRUCK && stack[Engine] == WIA) {
+        } else if (myCar[CarType] == TRUCK && myCar[Engine] == WIA) {
             fail("Truck에는 WIA엔진 사용 불가");
-        } else if (stack[CarType] == TRUCK && stack[BrakeSystem] == MANDO) {
+        } else if (myCar[CarType] == TRUCK && myCar[BrakeSystem] == MANDO) {
             fail("Truck에는 Mando제동장치 사용 불가");
-        } else if (stack[BrakeSystem] == BOSCH_B && stack[SteeringSystem] != BOSCH_S) {
+        } else if (myCar[BrakeSystem] == BOSCH_B && myCar[SteeringSystem] != BOSCH_S) {
             fail("Bosch제동장치에는 Bosch조향장치 이외 사용 불가");
         } else {
             System.out.println("자동차 부품 조합 테스트 결과 : PASS");
