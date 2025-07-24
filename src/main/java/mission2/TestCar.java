@@ -1,19 +1,13 @@
 package mission2;
 
-import mission2.BrakeSystem.Bosch_B;
-import mission2.BrakeSystem.Continental;
-import mission2.BrakeSystem.Mando;
-import mission2.CarType.SUV;
-import mission2.CarType.Sedan;
-import mission2.CarType.Truck;
-import mission2.Engine.Broken;
-import mission2.Engine.TOYOTA;
-import mission2.Engine.WIA;
-import mission2.SteeringSystem.Bosch_S;
-
+import mission2.BrakeSystem.*;
+import mission2.CarType.*;
+import mission2.Engine.*;
+import mission2.SteeringSystem.*;
 
 public class TestCar {
 
+    public static final int PRE_TEST_DELAY_MS = 1500;
     static MyCar myTestCar;
 
     TestCar(MyCar my){
@@ -51,7 +45,8 @@ public class TestCar {
     }
 
     static void testProducedCar() {
-
+        System.out.println("Test...");
+        delay(PRE_TEST_DELAY_MS);
         if(myTestCar.carType instanceof Sedan && myTestCar.breakSystem instanceof Continental) {
             fail("Sedan에는 Continental제동장치 사용 불가");
         } else if(myTestCar.carType instanceof SUV && myTestCar.engine instanceof TOYOTA) {
@@ -70,5 +65,11 @@ public class TestCar {
     private static void fail(String msg) {
         System.out.println("자동차 부품 조합 테스트 결과 : FAIL");
         System.out.println(msg);
+    }
+
+    private static void delay(int ms) {
+        try {
+            Thread.sleep(ms);
+        } catch (InterruptedException ignored) {}
     }
 }

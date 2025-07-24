@@ -20,6 +20,20 @@ class AssembleTest {
     }
 
     @Test
+    public void car_네이밍테스트2() {
+        car.set(new SUV());
+        String expectedName = "SUV";
+        assertEquals(expectedName, car.carType.getName());
+    }
+
+    @Test
+    public void car_네이밍테스트3() {
+        car.set(new Truck());
+        String expectedName = "Truck";
+        assertEquals(expectedName, car.carType.getName());
+    }
+
+    @Test
     public void bosh_Steering_네이밍테스트() {
         car.set(new Bosch_S());
         String expectedName = "BOSCH";
@@ -69,6 +83,4 @@ class AssembleTest {
         String expectedName = "Mando";
         assertEquals(expectedName, car.breakSystem.getName());
     }
-
-
 }
