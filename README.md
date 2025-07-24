@@ -17,6 +17,6 @@
 
 
 3. Code Coverage 최종 측정결과 캡쳐화면  
-캡쳐화면은 이미지파일이기 때문에, `result.jpg` 등의 형식으로 첨부해 올리시면 됩니다.  
+<img width="1004" height="336" alt="image" src="https://github.com/user-attachments/assets/095c63ff-d420-4dbe-9661-178f8e75afc6" />
 
 
